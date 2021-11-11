@@ -54,4 +54,7 @@ $ npm install
 
 # and repeat generate mixing
 $ npm run dev
+
+# start server
+$ php artisan serve
 ```
