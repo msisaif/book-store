@@ -1,10 +1,10 @@
 <template>
-    <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+    <nav-link :href="route('dashboard')" :active="route().current('dashboard')">
         Dashboard
-    </NavLink>
-    <NavLink :href="route('users.index')" :active="route().current('users.*')">
+    </nav-link>
+    <nav-link :href="route('users.index')" :active="route().current('users.*')">
         Users
-    </NavLink>
+    </nav-link>
 </template>
 
 <script>

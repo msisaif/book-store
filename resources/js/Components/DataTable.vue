@@ -42,7 +42,7 @@
     </div>
 
     <div v-if="collections.meta.total && topLinks" class="w-full p-1">
-        <PaginatorLinks :collections="collections" />
+        <paginator-links :collections="collections" />
     </div>
 
     <div class="overflow-auto relative">
@@ -57,7 +57,7 @@
 
             <tbody class="text-gray-600 text-sm font-light bg-white">
 
-                <tr v-for="(item, index) in collections.data" :key="item.id" class="border-b border-gray-200 hover:bg-gray-50">
+                <tr v-for="(item, index) in collections.data" :key="index" class="border-b border-gray-200 hover:bg-gray-50">
                     <td v-if="serialColumn" class="py-3 px-2 text-left sticky left-0 bg-white">
                         {{ collections.meta.from + index }}
                     </td>
@@ -75,7 +75,7 @@
     </div>
 
     <div v-if="collections.meta.total && bottomLinks" class="w-full p-1">
-        <PaginatorLinks :collections="collections" />
+        <paginator-links :collections="collections" />
     </div>
 
 </template>

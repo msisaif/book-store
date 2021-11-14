@@ -4,21 +4,26 @@
         <ValidationErrors class="mb-4" />
 
         <form @submit.prevent="submit" class="">
-            <div>
+            <div class="mb-4">
                 <Label for="name" value="Name" />
-                <Input id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
+                <Input id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus />
             </div>
 
-            <div class="mt-4">
+            <div class="mb-4">
                 <Label for="email" value="Email" />
-                <Input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="username" />
+                <Input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required />
+            </div>
+
+            <div class="mb-4">
+                <Label for="phone" value="Phone" />
+                <Input id="phone" type="number" class="mt-1 block w-full" v-model="form.phone" />
             </div>
 
             <hr class="w-full my-4">
             
             <div class="flex items-center justify-between">
                 <div class="">
-                    <GoToList :href="route('users.index')"/>
+                    <go-to-list :href="route('users.index')"/>
                 </div>
                 <Button class="" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     {{ buttonValue }}
@@ -55,6 +60,7 @@ export default {
             form: this.$inertia.form({
                 name: this.user.name,
                 email: this.user.email,
+                phone: this.user.phone,
             })
         }
     },

@@ -18,6 +18,7 @@ class UserResource extends JsonResource
             'id'            => (int) $this->id,
             'name'          => (string) ($this->name ?? ''),
             'email'         => (string) ($this->email ?? ''),
+            'phone'         => (string) ($this->phone ?? ''),
             'emailVerified' => (string) ($this->email_verified ?? ''),
         ];
     }

@@ -118,6 +118,11 @@ class UserController extends Controller
                 'email',
                 Rule::unique(User::class, 'email')->ignore($id),
             ],
+            'phone' => [
+                'required',
+                'string',
+                Rule::unique(User::class, 'phone')->ignore($id),
+            ],
         ]);
     }
 }
