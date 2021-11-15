@@ -15,6 +15,16 @@ class User extends Authenticatable
 
     protected $guarded = [];
 
+    public static $type = [
+        1 => 'Admin',
+        2 => 'User',
+    ];
+
+    public function getTypeNameAttribute()
+    {
+        return (Self::$type)[$this->type] ?? '';
+    }
+
     protected $hidden = [
         'password',
         'remember_token',

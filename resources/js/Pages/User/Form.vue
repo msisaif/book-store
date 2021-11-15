@@ -19,6 +19,13 @@
                 <Input id="phone" type="number" class="mt-1 block w-full" v-model="form.phone" />
             </div>
 
+            <div class="mb-4">
+                <Label for="type" value="Type" />
+                <Select name="type" class="mt-1 block w-full" v-model="form.type" required>
+                    <option :value="type" v-for="(typeName, type) in userType" :key="type">{{ typeName }}</option>
+                </Select>
+            </div>
+
             <hr class="w-full my-4">
             
             <div class="flex items-center justify-between">
@@ -39,6 +46,7 @@ import Input from '@/Components/Input.vue';
 import Label from '@/Components/Label.vue';
 import ValidationErrors from '@/Components/ValidationErrors.vue';
 import GoToList from '@/Components/GoToList.vue';
+import Select from '@/Components/Select.vue';
 
 export default {
     components: {
@@ -47,10 +55,12 @@ export default {
         Label,
         ValidationErrors,
         GoToList,
+        Select,
     },
 
     props: {
         user: { type: Object, default: {} },
+        userType: { type: Object, default: {} },
         moduleAction: String,
         buttonValue: { type: String, default: 'Submit' },
     },
@@ -61,6 +71,7 @@ export default {
                 name: this.user.name,
                 email: this.user.email,
                 phone: this.user.phone,
+                type: this.user.type,
             })
         }
     },

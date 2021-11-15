@@ -14,13 +14,15 @@
                 <th class="py-3 px-2 text-left">Name</th>
                 <th class="py-3 px-2 text-left">Email</th>
                 <th class="py-3 px-2 text-left">Phone</th>
+                <th class="py-3 px-2 text-left">Type</th>
                 <th class="py-3 px-2 text-center">Action</th>
             </template>
-            <template #default="{item: user}">
+            <template #default="{ item: user }">
                 <td class="py-3 px-2 text-left">{{ user.id }}</td>
                 <td class="py-3 px-2 text-left">{{ user.name }}</td>
                 <td class="py-3 px-2 text-left">{{ user.email }}</td>
                 <td class="py-3 px-2 text-left">{{ user.phone }}</td>
+                <td class="py-3 px-2 text-left">{{ user.typeName }}</td>
                 <td class="py-2.5 px-2">
                     <div class="flex justify-center items-center gap-1 md:gap-2">
                         <action-button-show :href="route('users.show', user.id)" />

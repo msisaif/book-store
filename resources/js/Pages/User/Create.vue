@@ -6,7 +6,7 @@
             Create User
         </template>
         
-        <form-component :user="user" moduleAction="store" />
+        <form-component :user="user" :user-type="userType" module-action="store" />
     </app-layout>
 </template>
 
@@ -25,6 +25,7 @@ export default {
 
     props: {
         user: { type: Object, default: {} },
+        userType: { type: Object, default: {} },
     },
 };
 </script>

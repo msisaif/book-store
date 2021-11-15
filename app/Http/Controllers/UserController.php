@@ -30,14 +30,15 @@ class UserController extends Controller
     public function create()
     {
         return Inertia::render('User/Create', [
-            'user' => new User(),
+            'user'      => new User(),
+            'userType'  => User::$type,
         ]);
     }
 
     public function store(Request $request)
     {
         $user = User::create($this->validateData($request) + [
-            'password' => Hash::make(123456),
+            'password'  => Hash::make(123456),
         ]);
 
         return redirect()
@@ -57,7 +58,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         return Inertia::render('User/Edit', [
-            'user' => $user,
+            'user'      => $user,
+            'userType'  => User::$type,
         ]);
     }
 
@@ -93,7 +95,10 @@ class UserController extends Controller
 
     protected function filter()
     {
-        $this->getQuery();
+        $this->getQuery()
+            ->when(isset(request()->type), function ($query) {
+                $query->where('type', request()->type);
+            });
 
         return $this;
     }
@@ -101,7 +106,7 @@ class UserController extends Controller
     protected function getFilterProperty()
     {
         return [
-            //
+            'type' => User::$type,
         ];
     }
     
@@ -123,6 +128,10 @@ class UserController extends Controller
                 'string',
                 Rule::unique(User::class, 'phone')->ignore($id),
             ],
+            'type' => [
+                'required',
+                'numeric',
+            ]
         ]);
     }
 }

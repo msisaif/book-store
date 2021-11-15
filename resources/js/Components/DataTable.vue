@@ -1,21 +1,17 @@
 <template>
 
-    <div class="w-full flex flex-col sm:flex-row justify-center gap-1">
-        <div class="w-full flex flex-col sm:flex-row justify-center gap-1">
-            <div class="flex" v-for="(filter, key) in filters" :key="key">
-                <select @change="searchHandler" v-model="filterData[key]" :name="key" class="block w-full rounded-md shadow-sm focus:outline-none focus:ring-0">
-                    <option value="" selected>
-                        {{ key.replaceAll('_', ' ').toLowerCase().replace(/\b[a-z]/g, function(letter) {
-                            return letter.toUpperCase();
-                        }) }} (All)
-                    </option>
-                    <option v-for="(property, index) in filter" :key="index" :value="index">{{ property }}</option>
-                </select>
-            </div>
+    <div class="w-full flex flex-wrap gap-2 py-2">
+        <div class="flex order-1 lg:order-2 w-full sm:w-auto" v-for="(filter, key) in filters" :key="key">
+            <select @change="searchHandler" v-model="filterData[key]" :name="key" class="block w-full rounded-md shadow-sm focus:outline-none focus:ring-0">
+                <option value="" selected>
+                    {{ key.replaceAll('_', ' ').toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                        return letter.toUpperCase();
+                    }) }} (All)
+                </option>
+                <option v-for="(property, index) in filter" :key="index" :value="index">{{ property }}</option>
+            </select>
         </div>
-    </div>
 
-    <div class="w-full flex flex-wrap gap-2 justify-between py-2">
         <div class="sm:w-24 flex order-2 lg:order-1">
             <select @change="searchHandler" v-model="perpage" class="block w-full rounded-md shadow-sm focus:outline-none focus:ring-0 cursor-pointer">
                 <option value="100">100</option>
@@ -25,18 +21,27 @@
             </select>
         </div>
 
-        <div class="w-full lg:max-w-xl lg:w-auto flex order-1 lg:order-2 flex-col sm:flex-row justify-between items-end gap-2">
-            <div class="w-full max-w-sm flex justify-end items-center gap-1" v-if="dateFilter">
+        <div v-if="dateFilter" class="ml-auto w-full lg:max-w-xl lg:w-auto flex flex-col sm:flex-row justify-between items-end gap-2 order-1 lg:order-2">
+            <div class="w-full max-w-sm flex justify-end items-center gap-1">
+                <select @change="dateSearchHandler" v-model="customDateFilter" class="block w-full rounded-md min-w-max shadow-sm focus:outline-none focus:ring-0 cursor-pointer">
+                    <option value="">Custom Date</option>
+                    <option value="7">Last 7 days</option>
+                    <option value="30">Last 30 days</option>
+                    <option value="90">Last 90 days</option>
+                    <option value="180">Last 6 Months</option>
+                </select>
+            </div>
+            <div v-if="! customDateFilter" class="w-full max-w-sm flex justify-end items-center gap-1">
                 <label class="w-12 text-right">From</label>
                 <input @input="searchHandler" v-model="dateFrom" :max="this.dateTo" type="date" class="block w-full max-w-xs rounded-md shadow-sm focus:outline-none focus:ring-0" />
             </div>
-            <div class="w-full max-w-sm flex justify-end items-center gap-1" v-if="dateFilter">
+            <div v-if="! customDateFilter" class="w-full max-w-sm flex justify-end items-center gap-1">
                 <label class="w-12 text-right">To</label>
                 <input @input="searchHandler" v-model="dateTo" :min="this.dateFrom" type="date" class="block w-full max-w-xs rounded-md shadow-sm focus:outline-none focus:ring-0" />
             </div>
         </div>
 
-        <div class="w-2/3 max-w-xs lg:w-auto flex order-3 lg:order-3">
+        <div class="ml-auto w-2/3 max-w-xs lg:w-auto flex order-4 lg:order-4">
             <input @input="searchHandler" class="block w-full rounded-md shadow-sm focus:outline-none focus:ring-0" type="search" v-model="search" placeholder="Search here ..." />
         </div>
     </div>
@@ -124,6 +129,7 @@ export default {
             data: {},
             dateFrom: '',
             dateTo: '',
+            customDateFilter: "",
         }
     },
     methods: {
@@ -145,6 +151,23 @@ export default {
             localStorage.setItem('historyOfList', url);
 
             this.$inertia.get(url, {}, { preserveState: true });
+        },
+        dateSearchHandler(event) {
+            const days = parseInt(event.target.value);
+
+            const dateForTo = new Date();
+
+            const dateForFrom = new Date(dateForTo.getTime() - (days * 24 * 60 * 60 * 1000));
+
+            if(days) {
+                this.dateFrom = `${dateForFrom.getFullYear()}-${(dateForFrom.getMonth() + 1).toString().padStart(2, '0')}-${dateForFrom.getDate().toString().padStart(2, '0')}`;
+                this.dateTo = `${dateForTo.getFullYear()}-${(dateForTo.getMonth() + 1).toString().padStart(2, '0')}-${dateForTo.getDate().toString().padStart(2, '0')}`;
+            } else {
+                this.dateFrom = "";
+                this.dateTo = "";
+            }
+
+            this.searchHandler();
         },
         clean(obj) {
             for (var propName in obj) {
